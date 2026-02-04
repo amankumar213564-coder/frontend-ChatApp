@@ -1,6 +1,6 @@
 // App.jsx
 import React, { useState, useEffect, useRef } from "react";
-import "./App.css"; // We'll use this for styling
+import "./App.css";
 
 const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
 
@@ -10,13 +10,15 @@ function App() {
   const ws = useRef(null);
   const messagesEndRef = useRef(null);
 
+  // Connect WebSocket
   useEffect(() => {
     ws.current = new WebSocket(WEBSOCKET_URL);
 
     ws.current.onopen = () => console.log("Connected to WebSocket server");
 
     ws.current.onmessage = (event) => {
-      setMessages((prev) => [...prev, { text: event.data, sender: "other" }]);
+      const data = JSON.parse(event.data);
+      setMessages((prev) => [...prev, data]);
     };
 
     ws.current.onclose = () => console.log("Disconnected from WebSocket server");
@@ -24,15 +26,17 @@ function App() {
     return () => ws.current.close();
   }, []);
 
+  // Auto scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
-    if (input.trim() === "") return;
+    if (!input.trim()) return;
 
-    ws.current.send(JSON.stringify({ message: input }));
-    setMessages((prev) => [...prev, { text: input, sender: "you" }]);
+    const data = { message: input, sender: "you" };
+    ws.current.send(JSON.stringify(data));
+
     setInput("");
   };
 
@@ -46,9 +50,9 @@ function App() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`chat-message ${msg.sender === "you" ? "you" : "other"}`}
+            className={`chat-message ${msg.sender === "you" ? "you" : msg.sender === "system" ? "system" : "other"}`}
           >
-            {msg.text}
+            <span>{msg.message}</span>
           </div>
         ))}
         <div ref={messagesEndRef} />
