@@ -163,3 +163,140 @@ body{
 .join-card button:hover{
   background:#064b43;
 }
+
+/* MAIN CONTAINER */
+.chat-container{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#efeae2;
+  font-family:"Segoe UI", Arial, sans-serif;
+}
+
+/* HEADER */
+.chat-header{
+  background:#075e54;
+  color:#fff;
+  padding:14px 18px;
+  font-size:18px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.08);
+}
+
+/* MESSAGE AREA */
+.chat-messages{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* ROW ALIGNMENT */
+.chat-row{
+  display:flex;
+  width:100%;
+}
+
+.chat-row.you{
+  justify-content:flex-end;
+}
+
+.chat-row.other{
+  justify-content:flex-start;
+}
+
+/* MESSAGE BUBBLE */
+.chat-message{
+  max-width:420px;
+  padding:8px 12px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 1px 1px rgba(0,0,0,.08);
+  animation:fadeIn .2s ease;
+}
+
+.chat-row.you .chat-message{
+  background:#dcf8c6;
+}
+
+.chat-row.other .chat-message{
+  background:#ffffff;
+}
+
+/* USERNAME */
+.msg-username{
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:2px;
+  color:#075e54;
+}
+
+/* TEXT */
+.chat-message div:nth-child(2){
+  font-size:14px;
+  color:#000;
+}
+
+/* TIME */
+.msg-time{
+  font-size:10px;
+  text-align:right;
+  opacity:.6;
+  margin-top:2px;
+}
+
+/* INPUT BAR */
+.chat-input{
+  display:flex;
+  align-items:center;
+  padding:10px 14px;
+  background:#f0f0f0;
+  gap:10px;
+}
+
+.chat-input input{
+  flex:1;
+  border:none;
+  outline:none;
+  padding:12px 16px;
+  border-radius:30px;
+  font-size:14px;
+  background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+
+.chat-input button{
+  padding:10px 18px;
+  border:none;
+  border-radius:30px;
+  background:#075e54;
+  color:#fff;
+  font-size:14px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.chat-input button:hover{
+  background:#064c45;
+}
+
+/* small animation */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(5px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* MOBILE */
+@media (max-width:768px){
+  .chat-message{
+    max-width:80%;
+  }
+}
+
