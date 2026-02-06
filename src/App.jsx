@@ -47,13 +47,12 @@ function App() {
       message: input,
       username: username,
       clientId: clientId.current,
-      time: new Date().toLocaleString("en-IN", {
-  day: "numeric",
-  month: "short",
+      time: new Date().toLocaleTimeString("en-IN", {
   hour: "numeric",
   minute: "2-digit",
   hour12: true
 })
+
 
     };
 
