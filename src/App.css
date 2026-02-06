@@ -295,6 +295,54 @@ body{
 .chat-input button:hover{
   background:#064c45;
 }
+/* INPUT BAR FIXED BOTTOM */
+.chat-input{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f0f2f5;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.08);
+  z-index: 100;
+}
+
+/* prevent messages hiding behind fixed bar */
+.chat-messages{
+  padding-bottom: 80px;
+}
+
+/* INPUT FIELD */
+.chat-input input{
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  border-radius: 30px;
+  background: #ffffff;
+  font-size: 14px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* SEND BUTTON */
+.chat-input button{
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: none;
+  background: #075e54;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.chat-input button:hover{
+  background: #064c45;
+}
 
 /* small animation */
 @keyframes fadeIn{
