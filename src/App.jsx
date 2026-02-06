@@ -64,14 +64,16 @@ function App() {
   if (!joined) {
     return (
       <div className="join-screen">
-        <h2>Enter your name</h2>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Your name"
-        />
-        <button onClick={joinChat}>Join Chat</button>
-      </div>
+  <div className="join-card">
+    <h2>Enter your name</h2>
+    <input
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      placeholder="Your name"
+    />
+    <button onClick={joinChat}>Join Chat</button>
+  </div>
+</div>
     );
   }
 
