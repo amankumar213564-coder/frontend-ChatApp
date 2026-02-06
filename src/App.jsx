@@ -82,15 +82,16 @@ function App() {
       </header>
 
       <div className="chat-messages">
-       {messages.map((msg, index) => (
+      {messages.map((msg, index) => (
   <div key={index} className={`chat-row ${msg.senderType}`}>
     <div className="chat-message">
       <div className="msg-username">{msg.username}</div>
-      <div className="msg-text">{msg.message}</div>
+      <div>{msg.message}</div>
       <div className="msg-time">{msg.time}</div>
     </div>
   </div>
 ))}
+
 
         <div ref={messagesEndRef} />
       </div>
