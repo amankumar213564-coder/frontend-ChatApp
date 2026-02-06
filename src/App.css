@@ -94,6 +94,29 @@ body {
   cursor: pointer;
 }
 
+.join-screen{
+  display:flex;
+  height:100vh;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:10px;
+}
+
+.msg-username{
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:3px;
+  color:#075e54;
+}
+
+.msg-time{
+  font-size:10px;
+  text-align:right;
+  opacity:.6;
+}
+
+
 /* MOBILE */
 @media (max-width: 768px) {
   .chat-message {
