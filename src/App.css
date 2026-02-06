@@ -262,7 +262,7 @@ body{
   background:#f0f0f0;
   gap:10px;
   position:fixed;
-  width:100%;
+  width:fit-content;
   bottom:0;
   left:0;
   right:0;
