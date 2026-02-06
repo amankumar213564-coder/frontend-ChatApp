@@ -250,6 +250,7 @@ body{
   text-align:right;
   opacity:.6;
   margin-top:2px;
+  color:#000000
 }
 
 /* INPUT BAR */
@@ -259,6 +260,7 @@ body{
   padding:10px 14px;
   background:#f0f0f0;
   gap:10px;
+  position:fixed;
 }
 
 .chat-input input{
