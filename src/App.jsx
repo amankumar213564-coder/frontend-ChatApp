@@ -47,7 +47,14 @@ function App() {
       message: input,
       username: username,
       clientId: clientId.current,
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleString("en-IN", {
+  day: "numeric",
+  month: "short",
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: true
+})
+
     };
 
     ws.current.send(JSON.stringify(data));
@@ -75,13 +82,16 @@ function App() {
       </header>
 
       <div className="chat-messages">
-        {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.senderType}`}>
-            <div className="msg-username">{msg.username}</div>
-            <div>{msg.message}</div>
-            <div className="msg-time">{msg.time}</div>
-          </div>
-        ))}
+       {messages.map((msg, index) => (
+  <div key={index} className={`chat-row ${msg.senderType}`}>
+    <div className="chat-message">
+      <div className="msg-username">{msg.username}</div>
+      <div className="msg-text">{msg.message}</div>
+      <div className="msg-time">{msg.time}</div>
+    </div>
+  </div>
+))}
+
         <div ref={messagesEndRef} />
       </div>
 
