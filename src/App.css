@@ -1,23 +1,19 @@
-/* App.css */
-
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: #e5ddd5;
 }
 
-/* Main container */
+/* FULL WIDTH */
 .chat-container {
   width: 100%;
-  max-width: 900px;
   height: 100vh;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   background-color: #efeae2;
 }
 
-/* Header */
+/* HEADER */
 .chat-header {
   padding: 15px;
   background-color: #075e54;
@@ -28,97 +24,78 @@ body {
   flex-shrink: 0;
 }
 
-/* Messages area */
+/* MESSAGE AREA */
 .chat-messages {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
-  background-image: url("https://i.imgur.com/0v1hR7L.png");
-  background-size: cover;
 }
 
-/* Message bubble */
+/* MESSAGE BASE */
 .chat-message {
   max-width: 75%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   margin-bottom: 10px;
   border-radius: 10px;
-  display: inline-block;
-  word-wrap: break-word;
   clear: both;
+  display: inline-block;
   font-size: 14px;
+  line-height: 1.4;
 }
 
-/* Your messages */
+/* YOUR MESSAGE (RIGHT) */
 .chat-message.you {
   background-color: #dcf8c6;
-  margin-left: auto;
-  text-align: left;
-  border-bottom-right-radius: 2px;
+  color: #000;              /* dark readable text */
+  float: right;
+  border-bottom-right-radius: 3px;
 }
 
-/* Other messages */
+/* OTHER MESSAGE (LEFT) */
 .chat-message.other {
   background-color: #ffffff;
-  margin-right: auto;
-  text-align: left;
-  border-bottom-left-radius: 2px;
+  color: #000;              /* dark readable text */
+  float: left;
+  border-bottom-left-radius: 3px;
 }
 
-/* System message */
+/* SYSTEM */
 .chat-message.system {
   background-color: #d9d9d9;
-  color: #555;
-  text-align: center;
+  color: #333;
   margin: 10px auto;
-  max-width: 60%;
-  border-radius: 8px;
+  text-align: center;
+  display: block;
 }
 
-/* Input area */
+/* INPUT */
 .chat-input {
   display: flex;
   padding: 10px;
   background: #f0f0f0;
-  border-top: 1px solid #ddd;
-  flex-shrink: 0;
 }
 
 .chat-input input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 12px;
   border-radius: 25px;
   border: none;
   outline: none;
   font-size: 15px;
-  background: white;
 }
 
 .chat-input button {
   margin-left: 10px;
-  padding: 10px 18px;
+  padding: 10px 20px;
   background-color: #075e54;
   color: white;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 15px;
 }
 
-.chat-input button:hover {
-  background-color: #054c44;
-}
-
-/* MOBILE FIX (important) */
+/* MOBILE */
 @media (max-width: 768px) {
-  .chat-container {
-    max-width: 100%;
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    border: none;
-  }
-
   .chat-message {
     max-width: 85%;
   }
