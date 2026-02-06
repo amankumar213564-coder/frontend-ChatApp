@@ -4,7 +4,7 @@ body {
   background-color: #e5ddd5;
 }
 
-/* FULL WIDTH */
+/* FULL WIDTH CONTAINER */
 .chat-container {
   width: 100%;
   height: 100vh;
@@ -21,7 +21,6 @@ body {
   text-align: center;
   font-weight: bold;
   font-size: 20px;
-  flex-shrink: 0;
 }
 
 /* MESSAGE AREA */
@@ -29,43 +28,62 @@ body {
   flex: 1;
   padding: 15px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-/* MESSAGE BASE */
+/* ROW WRAPPER */
+.chat-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.chat-row.you {
+  justify-content: flex-end;
+}
+
+.chat-row.other {
+  justify-content: flex-start;
+}
+
+/* MESSAGE BUBBLE */
 .chat-message {
   max-width: 75%;
-  padding: 10px 14px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  clear: both;
-  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
   font-size: 14px;
   line-height: 1.4;
+  display: flex;
+  flex-direction: column;
 }
 
-/* YOUR MESSAGE (RIGHT) */
-.chat-message.you {
+.chat-row.you .chat-message {
   background-color: #dcf8c6;
-  color: #000;              /* dark readable text */
-  float: right;
-  border-bottom-right-radius: 3px;
 }
 
-/* OTHER MESSAGE (LEFT) */
-.chat-message.other {
+.chat-row.other .chat-message {
   background-color: #ffffff;
-  color: #000;              /* dark readable text */
-  float: left;
-  border-bottom-left-radius: 3px;
 }
 
-/* SYSTEM */
-.chat-message.system {
-  background-color: #d9d9d9;
-  color: #333;
-  margin: 10px auto;
-  text-align: center;
-  display: block;
+/* USERNAME */
+.msg-username {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #075e54;
+}
+
+/* MESSAGE TEXT */
+.msg-text {
+  color: #000;
+}
+
+/* TIME */
+.msg-time {
+  font-size: 11px;
+  margin-top: 3px;
+  align-self: flex-end;
+  opacity: .7;
 }
 
 /* INPUT */
@@ -94,28 +112,34 @@ body {
   cursor: pointer;
 }
 
-.join-screen{
-  display:flex;
-  height:100vh;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:10px;
+/* JOIN PAGE */
+.join-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  background: #efeae2;
 }
 
-.msg-username{
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:3px;
-  color:#075e54;
+.join-screen input {
+  padding: 12px 15px;
+  width: 250px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
-.msg-time{
-  font-size:10px;
-  text-align:right;
-  opacity:.6;
+.join-screen button {
+  padding: 10px 20px;
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
 }
-
 
 /* MOBILE */
 @media (max-width: 768px) {
