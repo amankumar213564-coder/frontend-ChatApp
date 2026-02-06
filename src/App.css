@@ -105,3 +105,61 @@ body{
   border-radius:25px;
   cursor:pointer;
 }
+
+.join-screen{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#075e54,#128c7e);
+}
+
+.join-card{
+  background:#ffffff;
+  padding:40px 35px;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+  width:320px;
+}
+
+.join-card h2{
+  margin:0;
+  font-size:22px;
+  color:#075e54;
+}
+
+.join-card input{
+  width:100%;
+  padding:12px 15px;
+  border-radius:30px;
+  border:1px solid #ccc;
+  outline:none;
+  font-size:15px;
+  transition:.2s;
+}
+
+.join-card input:focus{
+  border-color:#128c7e;
+  box-shadow:0 0 0 2px rgba(18,140,126,.15);
+}
+
+.join-card button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:#075e54;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.join-card button:hover{
+  background:#064b43;
+}
