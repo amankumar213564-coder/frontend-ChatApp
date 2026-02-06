@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
@@ -7,52 +6,80 @@ const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [username, setUsername] = useState("");
+  const [joined, setJoined] = useState(false);
+
   const ws = useRef(null);
   const messagesEndRef = useRef(null);
+  const clientId = useRef(Math.random().toString(36).substring(2, 9));
 
-  // Connect WebSocket
   useEffect(() => {
     ws.current = new WebSocket(WEBSOCKET_URL);
 
-    ws.current.onopen = () => console.log("Connected to WebSocket server");
-
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
+
+      if (data.clientId === clientId.current) {
+        data.senderType = "you";
+      } else {
+        data.senderType = "other";
+      }
+
       setMessages((prev) => [...prev, data]);
     };
-
-    ws.current.onclose = () => console.log("Disconnected from WebSocket server");
 
     return () => ws.current.close();
   }, []);
 
-  // Auto scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const joinChat = () => {
+    if (!username.trim()) return;
+    setJoined(true);
+  };
+
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const data = { message: input, sender: "you" };
-    ws.current.send(JSON.stringify(data));
+    const data = {
+      message: input,
+      username: username,
+      clientId: clientId.current,
+      time: new Date().toLocaleTimeString()
+    };
 
+    ws.current.send(JSON.stringify(data));
     setInput("");
   };
+
+  if (!joined) {
+    return (
+      <div className="join-screen">
+        <h2>Enter your name</h2>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Your name"
+        />
+        <button onClick={joinChat}>Join Chat</button>
+      </div>
+    );
+  }
 
   return (
     <div className="chat-container">
       <header className="chat-header">
-        <h2>ChatApp</h2>
+        <h2>Live Chat</h2>
       </header>
 
       <div className="chat-messages">
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message ${msg.sender === "you" ? "you" : msg.sender === "system" ? "system" : "other"}`}
-          >
-            <span>{msg.message}</span>
+          <div key={index} className={`chat-message ${msg.senderType}`}>
+            <div className="msg-username">{msg.username}</div>
+            <div>{msg.message}</div>
+            <div className="msg-time">{msg.time}</div>
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -60,9 +87,8 @@ function App() {
 
       <div className="chat-input">
         <input
-          type="text"
-          placeholder="Type a message..."
           value={input}
+          placeholder="Type message..."
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
