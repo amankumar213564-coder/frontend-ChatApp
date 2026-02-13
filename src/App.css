@@ -1,4 +1,4 @@
-/* ==================== RESET & GLOBAL ==================== */
+/* ==================== RESET ==================== */
 * {
   margin: 0;
   padding: 0;
@@ -10,28 +10,21 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
-  background: #fff;
-  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 #root {
   width: 100%;
   height: 100%;
-  display: flex;
-}
-
-body {
-  font-size: 14px;
-  color: #000;
 }
 
 /* ==================== JOIN SCREEN ==================== */
 .join-screen {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #075e54 0%, #054d42 100%);
@@ -40,46 +33,45 @@ body {
 
 .join-container {
   width: 100%;
-  max-width: 100%;
 }
 
 .join-header {
   text-align: center;
   color: white;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .join-icon {
   font-size: 48px;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .join-header h1 {
   font-size: 28px;
   font-weight: 300;
-  letter-spacing: 0.5px;
   margin: 0;
 }
 
 .join-card {
   background: white;
   border-radius: 12px;
-  padding: 28px 20px;
+  padding: 24px 18px;
   width: 100%;
+  max-width: 450px;
 }
 
 .join-card h2 {
   font-size: 20px;
   color: #075e54;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 600;
 }
 
 .join-card p {
   font-size: 13px;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .join-card input {
@@ -88,10 +80,9 @@ body {
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 15px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   font-family: inherit;
   color: #000;
-  background: #fff;
 }
 
 .join-card input:focus {
@@ -130,73 +121,64 @@ body {
 /* ==================== CHAT CONTAINER ==================== */
 .chat-container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: #ece5dd;
-  overflow: hidden;
+  position: relative;
 }
 
 /* ==================== CHAT HEADER ==================== */
 .chat-header {
   background: #075e54;
   color: white;
-  padding: 10px 14px;
+  padding: 10px 15px;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
+  border-bottom: 1px solid #054d42;
 }
 
 .header-left {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .header-title {
   font-size: 16px;
   font-weight: 500;
   margin: 0;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .header-subtitle {
   font-size: 12px;
   opacity: 0.85;
-  line-height: 1;
+  line-height: 1.2;
+  margin: 0;
 }
 
 /* ==================== CHAT BODY ==================== */
 .chat-body {
   flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-messages {
-  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 12px 12px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 2px;
   scroll-behavior: smooth;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><pattern id="a" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="0.5" fill="%23000" opacity="0.05"/></pattern></defs><rect width="200" height="200" fill="%23ece5dd"/><rect width="200" height="200" fill="url(%23a)"/></svg>');
-  background-size: auto;
 }
 
-.chat-messages::-webkit-scrollbar {
+.chat-body::-webkit-scrollbar {
   width: 4px;
 }
 
-.chat-messages::-webkit-scrollbar-track {
+.chat-body::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+.chat-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 2px;
 }
 
@@ -210,9 +192,9 @@ body {
 }
 
 .empty-icon {
-  font-size: 64px;
+  font-size: 60px;
   margin-bottom: 12px;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .empty-state p {
@@ -222,17 +204,16 @@ body {
 /* ==================== MESSAGE GROUP ==================== */
 .msg-group {
   display: flex;
-  flex-direction: column;
   margin-bottom: 2px;
   animation: fadeIn 0.2s ease-out;
 }
 
 .msg-group.you {
-  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .msg-group.other {
-  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .msg-wrapper {
@@ -244,12 +225,12 @@ body {
 
 /* ==================== CHAT MESSAGE ==================== */
 .chat-message {
-  padding: 8px 10px;
+  padding: 8px 11px;
   border-radius: 8px;
   word-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
-  box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
 }
 
 .msg-group.you .chat-message {
@@ -282,7 +263,7 @@ body {
 
 .chat-message audio {
   width: 100%;
-  height: 32px;
+  height: 30px;
   margin: 0;
 }
 
@@ -291,9 +272,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 3px;
+  gap: 2px;
   padding: 0 6px;
-  font-size: 11px;
+  font-size: 10px;
   color: #666;
 }
 
@@ -302,12 +283,12 @@ body {
 }
 
 .msg-time {
-  font-size: 11px;
+  font-size: 10px;
   color: #666;
 }
 
 .tick {
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
 }
 
@@ -320,8 +301,8 @@ body {
   font-size: 11px;
   color: #999;
   padding: 0 6px;
-  min-height: 14px;
-  line-height: 1;
+  min-height: 13px;
+  line-height: 1.1;
 }
 
 .msg-group.you .msg-sender {
@@ -331,7 +312,7 @@ body {
 /* ==================== FILE PREVIEW ==================== */
 .file-preview {
   background: white;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #ddd;
   padding: 8px 12px;
   flex-shrink: 0;
 }
@@ -347,22 +328,22 @@ body {
 
 .preview-content img,
 .preview-content video {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 6px;
   object-fit: cover;
   flex-shrink: 0;
 }
 
 .file-icon {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #e8e8e8;
   border-radius: 6px;
-  font-size: 24px;
+  font-size: 22px;
   flex-shrink: 0;
 }
 
@@ -394,8 +375,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   flex-shrink: 0;
+  padding: 0;
 }
 
 .preview-remove:active {
@@ -405,7 +387,7 @@ body {
 /* ==================== TYPING INDICATOR ==================== */
 .typing-indicator {
   background: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #ddd;
   padding: 8px 12px;
   display: flex;
   align-items: center;
@@ -446,11 +428,12 @@ body {
   }
 }
 
-/* ==================== CHAT INPUT ==================== */
+/* ==================== CHAT INPUT CONTAINER ==================== */
 .chat-input-container {
   background: white;
   padding: 8px 12px 12px;
   flex-shrink: 0;
+  border-top: 1px solid #ddd;
 }
 
 .chat-input {
@@ -480,6 +463,11 @@ body {
   color: #075e54;
   flex-shrink: 0;
   line-height: 1;
+  padding: 0;
+}
+
+.file-button:active {
+  opacity: 0.7;
 }
 
 .chat-input input[type="text"] {
@@ -492,6 +480,7 @@ body {
   outline: none;
   font-family: inherit;
   min-width: 0;
+  max-height: 60px;
 }
 
 .chat-input input[type="text"]::placeholder {
@@ -511,11 +500,16 @@ body {
   color: #25d366;
   flex-shrink: 0;
   line-height: 1;
+  padding: 0;
 }
 
 .send-button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.send-button:active:not(:disabled) {
+  opacity: 0.7;
 }
 
 /* ==================== ANIMATIONS ==================== */
@@ -528,10 +522,10 @@ body {
   }
 }
 
-/* ==================== VERY SMALL PHONES (max 374px) ==================== */
+/* ==================== MOBILE (320px - 374px) ==================== */
 @media (max-width: 374px) {
   .chat-header {
-    padding: 8px 10px;
+    padding: 8px 12px;
   }
 
   .header-title {
@@ -542,9 +536,8 @@ body {
     font-size: 11px;
   }
 
-  .chat-messages {
-    padding: 8px;
-    gap: 1px;
+  .chat-body {
+    padding: 8px 10px;
   }
 
   .msg-wrapper {
@@ -552,20 +545,14 @@ body {
   }
 
   .chat-message {
-    padding: 6px 8px;
-    font-size: 13px;
+    padding: 6px 10px;
   }
 
   .msg-text {
     font-size: 13px;
-    line-height: 1.3;
   }
 
   .msg-footer {
-    font-size: 10px;
-  }
-
-  .msg-time {
     font-size: 10px;
   }
 
@@ -585,8 +572,8 @@ body {
 
   .file-button,
   .send-button {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     font-size: 14px;
   }
 
@@ -597,7 +584,6 @@ body {
 
   .join-card {
     padding: 20px 14px;
-    border-radius: 10px;
   }
 
   .join-card h2 {
@@ -608,12 +594,8 @@ body {
     font-size: 12px;
   }
 
-  .join-icon {
-    font-size: 40px;
-  }
-
-  .join-header h1 {
-    font-size: 22px;
+  .preview-content {
+    gap: 8px;
   }
 
   .preview-content img,
@@ -623,24 +605,12 @@ body {
     height: 40px;
     font-size: 18px;
   }
-
-  .preview-name {
-    font-size: 11px;
-  }
-
-  .empty-icon {
-    font-size: 48px;
-  }
-
-  .empty-state p {
-    font-size: 12px;
-  }
 }
 
-/* ==================== SMALL PHONES (375px - 414px) ==================== */
+/* ==================== MOBILE (375px - 414px) ==================== */
 @media (min-width: 375px) and (max-width: 414px) {
   .chat-header {
-    padding: 10px 12px;
+    padding: 10px 14px;
   }
 
   .header-title {
@@ -651,9 +621,8 @@ body {
     font-size: 12px;
   }
 
-  .chat-messages {
-    padding: 10px;
-    gap: 2px;
+  .chat-body {
+    padding: 10px 12px;
   }
 
   .msg-wrapper {
@@ -661,26 +630,19 @@ body {
   }
 
   .chat-message {
-    padding: 8px 10px;
-    font-size: 14px;
+    padding: 8px 11px;
   }
 
   .msg-text {
     font-size: 14px;
-    line-height: 1.4;
   }
 
   .msg-footer {
-    font-size: 11px;
-  }
-
-  .msg-time {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .msg-sender {
     font-size: 11px;
-    min-height: 14px;
   }
 
   .chat-input-container {
@@ -705,8 +667,7 @@ body {
   }
 
   .join-card {
-    padding: 24px 18px;
-    border-radius: 10px;
+    padding: 24px 16px;
   }
 
   .join-card h2 {
@@ -717,12 +678,8 @@ body {
     font-size: 13px;
   }
 
-  .join-icon {
-    font-size: 48px;
-  }
-
-  .join-header h1 {
-    font-size: 26px;
+  .preview-content {
+    gap: 10px;
   }
 
   .preview-content img,
@@ -730,39 +687,26 @@ body {
   .file-icon {
     width: 50px;
     height: 50px;
-    font-size: 24px;
-  }
-
-  .preview-name {
-    font-size: 12px;
-  }
-
-  .empty-icon {
-    font-size: 56px;
-  }
-
-  .empty-state p {
-    font-size: 13px;
+    font-size: 22px;
   }
 }
 
-/* ==================== MEDIUM PHONES (415px - 540px) ==================== */
+/* ==================== MOBILE (415px - 540px) ==================== */
 @media (min-width: 415px) and (max-width: 540px) {
   .chat-header {
-    padding: 11px 14px;
+    padding: 11px 15px;
   }
 
   .header-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .header-subtitle {
     font-size: 12px;
   }
 
-  .chat-messages {
-    padding: 12px;
-    gap: 2px;
+  .chat-body {
+    padding: 12px 14px;
   }
 
   .msg-wrapper {
@@ -770,24 +714,11 @@ body {
   }
 
   .chat-message {
-    padding: 8px 11px;
+    padding: 8px 12px;
   }
 
   .msg-text {
     font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .msg-footer {
-    font-size: 11px;
-  }
-
-  .msg-time {
-    font-size: 11px;
-  }
-
-  .msg-sender {
-    font-size: 11px;
   }
 
   .chat-input-container {
@@ -812,24 +743,11 @@ body {
   }
 
   .join-card {
-    padding: 28px 20px;
-    border-radius: 12px;
+    padding: 28px 18px;
   }
 
   .join-card h2 {
     font-size: 22px;
-  }
-
-  .join-card p {
-    font-size: 14px;
-  }
-
-  .join-icon {
-    font-size: 52px;
-  }
-
-  .join-header h1 {
-    font-size: 28px;
   }
 
   .preview-content img,
@@ -844,33 +762,24 @@ body {
   .chat-message video {
     max-height: 300px;
   }
-
-  .empty-icon {
-    font-size: 64px;
-  }
-
-  .empty-state p {
-    font-size: 14px;
-  }
 }
 
-/* ==================== TABLETS (541px - 800px) ==================== */
-@media (min-width: 541px) and (max-width: 800px) {
+/* ==================== TABLET (541px - 768px) ==================== */
+@media (min-width: 541px) and (max-width: 768px) {
   .chat-header {
     padding: 12px 16px;
   }
 
   .header-title {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .header-subtitle {
     font-size: 13px;
   }
 
-  .chat-messages {
+  .chat-body {
     padding: 14px 16px;
-    gap: 3px;
   }
 
   .msg-wrapper {
@@ -883,19 +792,6 @@ body {
 
   .msg-text {
     font-size: 15px;
-    line-height: 1.4;
-  }
-
-  .msg-footer {
-    font-size: 12px;
-  }
-
-  .msg-time {
-    font-size: 12px;
-  }
-
-  .msg-sender {
-    font-size: 12px;
   }
 
   .chat-input-container {
@@ -920,24 +816,12 @@ body {
   }
 
   .join-card {
-    padding: 32px 24px;
-    border-radius: 12px;
+    padding: 32px 22px;
+    max-width: 480px;
   }
 
   .join-card h2 {
     font-size: 24px;
-  }
-
-  .join-card p {
-    font-size: 14px;
-  }
-
-  .join-icon {
-    font-size: 56px;
-  }
-
-  .join-header h1 {
-    font-size: 30px;
   }
 
   .preview-content img,
@@ -952,18 +836,10 @@ body {
   .chat-message video {
     max-height: 350px;
   }
-
-  .empty-icon {
-    font-size: 72px;
-  }
-
-  .empty-state p {
-    font-size: 15px;
-  }
 }
 
-/* ==================== DESKTOP (801px+) ==================== */
-@media (min-width: 801px) {
+/* ==================== DESKTOP (769px+) ==================== */
+@media (min-width: 769px) {
   .chat-header {
     padding: 14px 20px;
   }
@@ -976,9 +852,11 @@ body {
     font-size: 13px;
   }
 
-  .chat-messages {
+  .chat-body {
     padding: 16px 20px;
-    gap: 4px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .msg-wrapper {
@@ -991,19 +869,6 @@ body {
 
   .msg-text {
     font-size: 15px;
-    line-height: 1.45;
-  }
-
-  .msg-footer {
-    font-size: 12px;
-  }
-
-  .msg-time {
-    font-size: 12px;
-  }
-
-  .msg-sender {
-    font-size: 12px;
   }
 
   .chat-input-container {
@@ -1016,7 +881,7 @@ body {
     padding: 10px 14px;
     gap: 10px;
     width: 100%;
-    max-width: 900px;
+    max-width: 850px;
   }
 
   .file-button,
@@ -1032,25 +897,12 @@ body {
   }
 
   .join-card {
-    padding: 40px 32px;
-    border-radius: 14px;
-    max-width: 500px;
+    padding: 40px 28px;
+    max-width: 520px;
   }
 
   .join-card h2 {
     font-size: 26px;
-  }
-
-  .join-card p {
-    font-size: 15px;
-  }
-
-  .join-icon {
-    font-size: 64px;
-  }
-
-  .join-header h1 {
-    font-size: 32px;
   }
 
   .preview-content img,
@@ -1065,49 +917,37 @@ body {
   .chat-message video {
     max-height: 400px;
   }
-
-  .empty-icon {
-    font-size: 80px;
-  }
-
-  .empty-state p {
-    font-size: 16px;
-  }
 }
 
-/* ==================== LANDSCAPE MODE ==================== */
+/* ==================== LANDSCAPE ==================== */
 @media (max-height: 500px) {
   .chat-header {
     padding: 6px 10px;
   }
 
   .header-title {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .header-subtitle {
     font-size: 10px;
   }
 
-  .chat-messages {
+  .chat-body {
     padding: 6px;
   }
 
-  .msg-wrapper {
-    max-width: 85%;
-  }
-
   .chat-message {
-    padding: 4px 6px;
+    padding: 4px 8px;
   }
 
   .msg-text {
     font-size: 12px;
-    line-height: 1.3;
+    line-height: 1.2;
   }
 
   .msg-footer {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .msg-sender {
@@ -1135,8 +975,8 @@ body {
   }
 
   .preview-content {
-    padding: 4px 6px;
     gap: 6px;
+    padding: 4px 6px;
   }
 
   .preview-content img,
@@ -1147,10 +987,6 @@ body {
     font-size: 16px;
   }
 
-  .preview-name {
-    font-size: 10px;
-  }
-
   .typing-indicator {
     padding: 4px 10px;
     font-size: 11px;
@@ -1159,10 +995,6 @@ body {
 
 /* ==================== DARK MODE ==================== */
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
-
   .join-screen {
     background: linear-gradient(135deg, #054d42 0%, #033d33 100%);
   }
@@ -1190,12 +1022,12 @@ body {
     color: #666;
   }
 
-  .chat-body {
+  .chat-container {
     background: #0a0a0a;
   }
 
-  .chat-messages {
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><defs><pattern id="a" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="0.5" fill="%23fff" opacity="0.02"/></pattern></defs><rect width="200" height="200" fill="%230a0a0a"/><rect width="200" height="200" fill="url(%23a)"/></svg>');
+  .chat-body {
+    background: #0a0a0a;
   }
 
   .msg-group.other .chat-message {
@@ -1216,16 +1048,13 @@ body {
     color: #aaa;
   }
 
-  .msg-time {
-    color: #aaa;
-  }
-
   .msg-sender {
     color: #777;
   }
 
   .chat-input-container {
     background: #121212;
+    border-top-color: #2a2a2a;
   }
 
   .chat-input {
@@ -1261,7 +1090,6 @@ body {
   .typing-indicator {
     background: #1e1e1e;
     border-color: #2a2a2a;
-    color: #999;
   }
 
   .empty-state {
@@ -1276,9 +1104,5 @@ body {
   .typing-indicator,
   .file-preview {
     display: none;
-  }
-
-  .chat-messages {
-    overflow: visible;
   }
 }
