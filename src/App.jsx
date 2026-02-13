@@ -4,8 +4,9 @@ import "./App.css";
 // 🔴 IMPORTANT: Change this based on where your backend is running:
 // Local: ws://localhost:8000
 // Production: wss://your-railway-backend.railway.app
-const WEBSOCKET_URL = "ws://localhost:8000";
-
+// const WEBSOCKET_URL = "ws://localhost:8000";
+// // Get this from Railway dashboard
+const WEBSOCKET_URL = "wss://your-backend-abc123.railway.app";
 function App() {
   const [joined, setJoined] = useState(false);
   const [username, setUsername] = useState("");
