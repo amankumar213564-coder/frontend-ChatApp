@@ -35,6 +35,17 @@ function App() {
     wsRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
+      /* HISTORY FROM DATABASE */
+      if (data.type === "history") {
+        setMessages(
+          data.messages.map((m) => ({
+            ...m,
+            senderType: m.clientId === clientIdRef.current ? "you" : "other",
+          })),
+        );
+        return;
+      }
+
       /* ONLINE USERS */
       if (data.type === "users") {
         setOnlineCount(data.count);
@@ -50,20 +61,10 @@ function App() {
         return;
       }
 
-      /* DELIVERED */
-      if (data.type === "delivered") {
+      /* DELIVERY RECEIPTS */
+      if (data.type === "delivered" || data.type === "seen") {
         setMessages((prev) =>
-          prev.map((m) =>
-            m.id === data.id ? { ...m, status: "delivered" } : m,
-          ),
-        );
-        return;
-      }
-
-      /* SEEN */
-      if (data.type === "seen") {
-        setMessages((prev) =>
-          prev.map((m) => (m.id === data.id ? { ...m, status: "seen" } : m)),
+          prev.map((m) => (m.id === data.id ? { ...m, status: data.type } : m)),
         );
         return;
       }
@@ -106,10 +107,7 @@ function App() {
 
     const reader = new FileReader();
     reader.onload = () => {
-      setFileData({
-        file: reader.result,
-        fileType: file.type,
-      });
+      setFileData({ file: reader.result, fileType: file.type });
     };
     reader.readAsDataURL(file);
   };
@@ -141,7 +139,6 @@ function App() {
     setFileData(null);
   };
 
-  /* -------------------- JOIN SCREEN -------------------- */
   if (!joined) {
     return (
       <div className="join-screen">
@@ -158,16 +155,13 @@ function App() {
     );
   }
 
-  /* -------------------- CHAT UI -------------------- */
   return (
     <div className="chat-container">
-      {/* HEADER */}
       <div className="chat-header">
         <div className="header-title">Live Chat</div>
         <div className="header-status">{onlineCount} online</div>
       </div>
 
-      {/* BODY */}
       <div className="chat-body">
         <div className="chat-messages">
           {messages.map((msg, i) => (
@@ -204,12 +198,10 @@ function App() {
         </div>
       </div>
 
-      {/* TYPING */}
       {typingUser && (
         <div className="typing-indicator">{typingUser} is typing...</div>
       )}
 
-      {/* INPUT */}
       <div className="chat-input">
         <input
           type="text"
