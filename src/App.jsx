@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 
-const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
-// For local development, use: const WEBSOCKET_URL = "ws://localhost:5000";
+// 🔴 IMPORTANT: Change this based on where your backend is running:
+// Local: ws://localhost:8000
+// Production: wss://your-railway-backend.railway.app
+const WEBSOCKET_URL = "ws://localhost:8000";
 
 function App() {
   const [joined, setJoined] = useState(false);
@@ -25,12 +27,13 @@ function App() {
     if (!joined) return;
 
     console.log("🔌 Attempting to connect to WebSocket...");
+    console.log("📍 URL:", WEBSOCKET_URL);
     setConnectionStatus("connecting");
 
     wsRef.current = new WebSocket(WEBSOCKET_URL);
 
     wsRef.current.onopen = () => {
-      console.log("✓ WebSocket connected");
+      console.log("✅ WebSocket connected");
       setConnectionStatus("connected");
 
       wsRef.current.send(
@@ -40,6 +43,7 @@ function App() {
           clientId: clientIdRef.current,
         }),
       );
+      console.log(`✅ Sent join message for: ${username}`);
     };
 
     wsRef.current.onmessage = (event) => {
@@ -166,6 +170,7 @@ function App() {
         fileType: file.type,
         fileName: file.name,
       });
+      console.log(`📎 File selected: ${file.name}`);
     };
     reader.onerror = () => {
       alert("Error reading file");
@@ -213,8 +218,9 @@ function App() {
     }
 
     try {
+      console.log(`📤 Sending ${payload.type}...`);
       wsRef.current.send(JSON.stringify(payload));
-      console.log("📤 Message sent:", payload.type);
+      console.log(`✅ ${payload.type} sent!`);
 
       setInput("");
       setFileData(null);
