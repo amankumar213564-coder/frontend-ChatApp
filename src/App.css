@@ -58,6 +58,7 @@ body{
   background:white;
   font-size:14px;
   position:relative;
+  color:black;
 }
 
 .chat-row.you .chat-message{
@@ -69,6 +70,7 @@ body{
   font-size:12px;
   font-weight:600;
   margin-bottom:3px;
+  color:black;
 }
 
 /* TIME */
@@ -92,6 +94,7 @@ body{
   border-radius:20px;
   border:none;
   outline:none;
+  color:black;
 }
 
 .chat-input button{
