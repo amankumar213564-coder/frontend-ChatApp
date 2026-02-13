@@ -9,6 +9,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [joined, setJoined] = useState(false);
   const [typingUser, setTypingUser] = useState("");
+  const [onlineCount, setOnlineCount] = useState(0);
 
   const ws = useRef(null);
   const messagesEndRef = useRef(null);
@@ -17,10 +18,20 @@ function App() {
   useEffect(() => {
     ws.current = new WebSocket(WEBSOCKET_URL);
 
+    ws.current.onopen = () => {
+      ws.current.send(JSON.stringify({ type: "join" }));
+    };
+
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      // typing event
+      /* USERS COUNT */
+      if (data.type === "users") {
+        setOnlineCount(data.count);
+        return;
+      }
+
+      /* TYPING */
       if (data.type === "typing") {
         if (data.clientId !== clientId.current) {
           setTypingUser(data.username);
@@ -29,16 +40,45 @@ function App() {
         return;
       }
 
-      // delete event
+      /* DELETE */
       if (data.type === "delete") {
         setMessages((prev) => prev.filter((m) => m.id !== data.id));
         return;
       }
 
+      /* DELIVERED */
+      if (data.type === "delivered") {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === data.id ? { ...m, status: "delivered" } : m
+          )
+        );
+        return;
+      }
+
+      /* SEEN */
+      if (data.type === "seen") {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === data.id ? { ...m, status: "seen" } : m
+          )
+        );
+        return;
+      }
+
+      /* MESSAGE OR FILE */
       if (data.clientId === clientId.current) {
         data.senderType = "you";
       } else {
         data.senderType = "other";
+
+        // send delivered receipt
+        ws.current.send(
+          JSON.stringify({
+            type: "delivered",
+            id: data.id
+          })
+        );
       }
 
       setMessages((prev) => [...prev, data]);
@@ -49,6 +89,13 @@ function App() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    // seen receipt
+    messages.forEach((m) => {
+      if (m.senderType === "other") {
+        ws.current.send(JSON.stringify({ type: "seen", id: m.id }));
+      }
+    });
   }, [messages]);
 
   const joinChat = () => {
@@ -60,15 +107,13 @@ function App() {
     if (!input.trim()) return;
 
     const data = {
+      type: "message",
       id: Date.now(),
       message: input,
       username,
       clientId: clientId.current,
-      time: new Date().toLocaleTimeString("en-IN", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-      })
+      status: "sent",
+      time: new Date().toLocaleTimeString()
     };
 
     ws.current.send(JSON.stringify(data));
@@ -76,14 +121,7 @@ function App() {
   };
 
   const deleteMessage = (id) => {
-    setMessages((prev) => prev.filter((m) => m.id !== id));
-
-    ws.current.send(
-      JSON.stringify({
-        type: "delete",
-        id
-      })
-    );
+    ws.current.send(JSON.stringify({ type: "delete", id }));
   };
 
   const handleFile = (e) => {
@@ -101,6 +139,7 @@ function App() {
           fileType: file.type,
           username,
           clientId: clientId.current,
+          status: "sent",
           time: new Date().toLocaleTimeString()
         })
       );
@@ -129,6 +168,7 @@ function App() {
     <div className="chat-container">
       <header className="chat-header">
         <h2>Live Chat</h2>
+        <div>{onlineCount} online</div>
       </header>
 
       <div className="chat-messages">
@@ -149,7 +189,16 @@ function App() {
                 <div>{msg.message}</div>
               )}
 
-              <div className="msg-time">{msg.time}</div>
+              <div className="msg-time">
+                {msg.time}
+                {msg.senderType === "you" && (
+                  <span className={`tick ${msg.status}`}>
+                    {msg.status === "sent" && " ✔"}
+                    {msg.status === "delivered" && " ✔✔"}
+                    {msg.status === "seen" && " ✔✔"}
+                  </span>
+                )}
+              </div>
 
               {msg.senderType === "you" && (
                 <button onClick={() => deleteMessage(msg.id)}>Delete</button>
@@ -157,13 +206,10 @@ function App() {
             </div>
           </div>
         ))}
-
         <div ref={messagesEndRef} />
       </div>
 
-      {typingUser && (
-        <div style={{ paddingLeft: "15px" }}>{typingUser} is typing...</div>
-      )}
+      {typingUser && <div className="typing">{typingUser} is typing...</div>}
 
       <div className="chat-input">
         <input
@@ -171,7 +217,6 @@ function App() {
           placeholder="Type message..."
           onChange={(e) => {
             setInput(e.target.value);
-
             ws.current.send(
               JSON.stringify({
                 type: "typing",
