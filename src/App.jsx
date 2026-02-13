@@ -27,8 +27,8 @@ function App() {
         JSON.stringify({
           type: "join",
           username,
-          clientId: clientIdRef.current
-        })
+          clientId: clientIdRef.current,
+        }),
       );
     };
 
@@ -54,8 +54,8 @@ function App() {
       if (data.type === "delivered") {
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === data.id ? { ...m, status: "delivered" } : m
-          )
+            m.id === data.id ? { ...m, status: "delivered" } : m,
+          ),
         );
         return;
       }
@@ -63,9 +63,7 @@ function App() {
       /* SEEN */
       if (data.type === "seen") {
         setMessages((prev) =>
-          prev.map((m) =>
-            m.id === data.id ? { ...m, status: "seen" } : m
-          )
+          prev.map((m) => (m.id === data.id ? { ...m, status: "seen" } : m)),
         );
         return;
       }
@@ -75,9 +73,7 @@ function App() {
         data.clientId === clientIdRef.current ? "you" : "other";
 
       if (senderType === "other") {
-        wsRef.current.send(
-          JSON.stringify({ type: "delivered", id: data.id })
-        );
+        wsRef.current.send(JSON.stringify({ type: "delivered", id: data.id }));
       }
 
       setMessages((prev) => [...prev, { ...data, senderType }]);
@@ -92,9 +88,7 @@ function App() {
 
     messages.forEach((m) => {
       if (m.senderType === "other") {
-        wsRef.current.send(
-          JSON.stringify({ type: "seen", id: m.id })
-        );
+        wsRef.current.send(JSON.stringify({ type: "seen", id: m.id }));
       }
     });
   }, [messages]);
@@ -114,7 +108,7 @@ function App() {
     reader.onload = () => {
       setFileData({
         file: reader.result,
-        fileType: file.type
+        fileType: file.type,
       });
     };
     reader.readAsDataURL(file);
@@ -129,7 +123,7 @@ function App() {
       clientId: clientIdRef.current,
       username,
       time: new Date().toLocaleTimeString(),
-      status: "sent"
+      status: "sent",
     };
 
     if (fileData) {
@@ -212,9 +206,7 @@ function App() {
 
       {/* TYPING */}
       {typingUser && (
-        <div className="typing-indicator">
-          {typingUser} is typing...
-        </div>
+        <div className="typing-indicator">{typingUser} is typing...</div>
       )}
 
       {/* INPUT */}
@@ -229,8 +221,8 @@ function App() {
               JSON.stringify({
                 type: "typing",
                 username,
-                clientId: clientIdRef.current
-              })
+                clientId: clientIdRef.current,
+              }),
             );
           }}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
