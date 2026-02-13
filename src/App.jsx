@@ -6,10 +6,9 @@ const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [fileData, setFileData] = useState(null);
   const [username, setUsername] = useState("");
   const [joined, setJoined] = useState(false);
-  const [typingUser, setTypingUser] = useState("");
-  const [onlineCount, setOnlineCount] = useState(0);
 
   const ws = useRef(null);
   const messagesEndRef = useRef(null);
@@ -18,67 +17,13 @@ function App() {
   useEffect(() => {
     ws.current = new WebSocket(WEBSOCKET_URL);
 
-    ws.current.onopen = () => {
-      ws.current.send(JSON.stringify({ type: "join" }));
-    };
-
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      /* USERS COUNT */
-      if (data.type === "users") {
-        setOnlineCount(data.count);
-        return;
-      }
-
-      /* TYPING */
-      if (data.type === "typing") {
-        if (data.clientId !== clientId.current) {
-          setTypingUser(data.username);
-          setTimeout(() => setTypingUser(""), 1500);
-        }
-        return;
-      }
-
-      /* DELETE */
-      if (data.type === "delete") {
-        setMessages((prev) => prev.filter((m) => m.id !== data.id));
-        return;
-      }
-
-      /* DELIVERED */
-      if (data.type === "delivered") {
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === data.id ? { ...m, status: "delivered" } : m
-          )
-        );
-        return;
-      }
-
-      /* SEEN */
-      if (data.type === "seen") {
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === data.id ? { ...m, status: "seen" } : m
-          )
-        );
-        return;
-      }
-
-      /* MESSAGE OR FILE */
       if (data.clientId === clientId.current) {
         data.senderType = "you";
       } else {
         data.senderType = "other";
-
-        // send delivered receipt
-        ws.current.send(
-          JSON.stringify({
-            type: "delivered",
-            id: data.id
-          })
-        );
       }
 
       setMessages((prev) => [...prev, data]);
@@ -89,13 +34,6 @@ function App() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
-    // seen receipt
-    messages.forEach((m) => {
-      if (m.senderType === "other") {
-        ws.current.send(JSON.stringify({ type: "seen", id: m.id }));
-      }
-    });
   }, [messages]);
 
   const joinChat = () => {
@@ -103,49 +41,47 @@ function App() {
     setJoined(true);
   };
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-
-    const data = {
-      type: "message",
-      id: Date.now(),
-      message: input,
-      username,
-      clientId: clientId.current,
-      status: "sent",
-      time: new Date().toLocaleTimeString()
-    };
-
-    ws.current.send(JSON.stringify(data));
-    setInput("");
-  };
-
-  const deleteMessage = (id) => {
-    ws.current.send(JSON.stringify({ type: "delete", id }));
-  };
-
-  const handleFile = (e) => {
+  /* FILE SELECT */
+  const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
 
     reader.onload = () => {
-      ws.current.send(
-        JSON.stringify({
-          type: "file",
-          id: Date.now(),
-          file: reader.result,
-          fileType: file.type,
-          username,
-          clientId: clientId.current,
-          status: "sent",
-          time: new Date().toLocaleTimeString()
-        })
-      );
+      setFileData({
+        file: reader.result,
+        fileType: file.type
+      });
     };
 
     reader.readAsDataURL(file);
+  };
+
+  /* SEND MESSAGE OR FILE */
+  const sendMessage = () => {
+    if (!input.trim() && !fileData) return;
+
+    const data = {
+      id: Date.now(),
+      username,
+      clientId: clientId.current,
+      time: new Date().toLocaleTimeString()
+    };
+
+    if (fileData) {
+      data.type = "file";
+      data.file = fileData.file;
+      data.fileType = fileData.fileType;
+    } else {
+      data.type = "message";
+      data.message = input;
+    }
+
+    ws.current.send(JSON.stringify(data));
+
+    setInput("");
+    setFileData(null);
   };
 
   if (!joined) {
@@ -168,7 +104,6 @@ function App() {
     <div className="chat-container">
       <header className="chat-header">
         <h2>Live Chat</h2>
-        <div>{onlineCount} online</div>
       </header>
 
       <div className="chat-messages">
@@ -179,9 +114,9 @@ function App() {
 
               {msg.type === "file" ? (
                 msg.fileType.startsWith("image") ? (
-                  <img src={msg.file} alt="" width="200" />
+                  <img src={msg.file} alt="" />
                 ) : msg.fileType.startsWith("video") ? (
-                  <video src={msg.file} controls width="200" />
+                  <video src={msg.file} controls />
                 ) : msg.fileType.startsWith("audio") ? (
                   <audio src={msg.file} controls />
                 ) : null
@@ -189,46 +124,22 @@ function App() {
                 <div>{msg.message}</div>
               )}
 
-              <div className="msg-time">
-                {msg.time}
-                {msg.senderType === "you" && (
-                  <span className={`tick ${msg.status}`}>
-                    {msg.status === "sent" && " ✔"}
-                    {msg.status === "delivered" && " ✔✔"}
-                    {msg.status === "seen" && " ✔✔"}
-                  </span>
-                )}
-              </div>
-
-              {msg.senderType === "you" && (
-                <button onClick={() => deleteMessage(msg.id)}>Delete</button>
-              )}
+              <div className="msg-time">{msg.time}</div>
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      {typingUser && <div className="typing">{typingUser} is typing...</div>}
-
       <div className="chat-input">
         <input
           value={input}
           placeholder="Type message..."
-          onChange={(e) => {
-            setInput(e.target.value);
-            ws.current.send(
-              JSON.stringify({
-                type: "typing",
-                username,
-                clientId: clientId.current
-              })
-            );
-          }}
+          onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
 
-        <input type="file" onChange={handleFile} />
+        <input type="file" onChange={handleFileSelect} />
 
         <button onClick={sendMessage}>Send</button>
       </div>
