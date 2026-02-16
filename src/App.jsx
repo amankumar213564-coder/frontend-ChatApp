@@ -6,7 +6,11 @@ import "./App.css";
 // Production: wss://your-railway-backend.railway.app
 // const WEBSOCKET_URL = "ws://localhost:8000";
 // // Get this from Railway dashboard
-const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
+// const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
+const WEBSOCKET_URL =
+  (window.location.protocol === "https:" ? "wss://" : "ws://") +
+  "backend-chatapp-production-8467.up.railway.app";
+
 function App() {
   const [joined, setJoined] = useState(false);
   const [username, setUsername] = useState("");
