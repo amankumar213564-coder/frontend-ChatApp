@@ -9,7 +9,7 @@ import "./App.css";
 // const WEBSOCKET_URL = "wss://backend-chatapp-production-8467.up.railway.app";
 const WEBSOCKET_URL =
   (window.location.protocol === "https:" ? "wss://" : "ws://") +
-  "backend-chatapp-production-8467.up.railway.app";
+  "backend-chatapp-production-8467.up.railway.app/";
 
 function App() {
   const [joined, setJoined] = useState(false);
